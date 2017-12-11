@@ -19,5 +19,14 @@
     "bastion"
   ],
   "author": "Robert Clark",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-session": "^2.0.0-beta.3",
+    "dockerode": "^2.5.3",
+    "express": "^4.16.2",
+    "express-validator": "^4.3.0",
+    "passport": "^0.4.0",
+    "uuid": "^3.1.0"
+  }
 }
