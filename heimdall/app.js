@@ -113,8 +113,8 @@ app.get('/completesignup', (req, res) => {
   res.render('completesignup', {user:req.user, errors:null});
 });
 
-app.post('/launch', (req, res)=>{
-  console.log("Request to launch a jumpbox to connect to:", req.body.target);
+app.post('/requestAccess', (req, res)=>{
+  console.log("Request to launch a bastion to connect to:", req.body.target);
   //Launch a container
   //Retreive the container's public key
   //Sign / create a certificate
@@ -167,7 +167,7 @@ app.get('/',(req, res) => {
   res.render('index', {user:req.user});
 });
 
-app.get('/jumpboxes', (req, res) => {
+app.get('/bastions', (req, res) => {
   //For routing to get here, user must be logged in.
   var opts={
     filters: {
@@ -181,12 +181,16 @@ app.get('/jumpboxes', (req, res) => {
       res.send("Docker broke"); //TODO: Proper error handling
     }
     console.log("Found", containers.length, "containers")
-    res.render('jumpboxes', {user:req.user, containers:containers});
+    res.render('bastions', {user:req.user, containers:containers});
   });
 });
 
+
+app.get('/requestAccess', (req,res) => {
+  res.render('requestAccess',{user:req.user});
+});
 // Create a docker container jumphost for the provided target
-app.post('/launch', (req, res, next) => {
+app.post('/requestAccess', (req, res, next) => {
 
 });
 
