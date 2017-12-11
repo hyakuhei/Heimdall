@@ -12,11 +12,12 @@ const passportSetup = require('./config/passport-setup');
 const dbSetup = require('./util/db-setup');
 const keys = require('./config/keys');
 const User = require('./models/user');
+const containers = require('./util/containers');
 
 const app = express();
-var docker = new Docker();
 // set up view engine
 app.set('view engine', 'ejs');
+const docker = new Docker();
 
 // middleware to serve static stuff like images
 app.use('/assets', express.static('assets'));
@@ -113,17 +114,6 @@ app.get('/completesignup', (req, res) => {
   res.render('completesignup', {user:req.user, errors:null});
 });
 
-app.post('/requestAccess', (req, res)=>{
-  console.log("Request to launch a bastion to connect to:", req.body.target);
-  //Launch a container
-  //Retreive the container's public key
-  //Sign / create a certificate
-  //Push certificate back into container
-  //Launch SSHD
-  //Update jumpboxes db
-  res.send("..... launching");
-});
-
 app.post('/config', (req,res,next)=>{
   //stuff
   req.checkBody('pubkey', 'pubkey required').notEmpty();
@@ -172,26 +162,86 @@ app.get('/bastions', (req, res) => {
   var opts={
     filters: {
       "label": [
-        `heimdall.type=jumpbox`,`heimdall.user=${req.user}`
+        `heimdall.type=bastion`,`heimdall.userId=${req.user.id}`
       ]
-    }
+    },
+    all:true,
   };
   docker.listContainers(opts, (err,containers)=>{
     if (err) {
       res.send("Docker broke"); //TODO: Proper error handling
     }
+    console.log(containers);
     console.log("Found", containers.length, "containers")
-    res.render('bastions', {user:req.user, containers:containers});
+    User.findById(req.user.id, (err,result)=>{
+      if (err){
+        res.render('error',err);
+      }
+      res.render('bastions', {
+        'user':req.user,
+        'containers':containers,
+      });
+    });
+
   });
 });
 
-
 app.get('/requestAccess', (req,res) => {
-  res.render('requestAccess',{user:req.user});
+  res.render('requestAccess',{user:req.user, errors:null});
 });
-// Create a docker container jumphost for the provided target
-app.post('/requestAccess', (req, res, next) => {
 
+app.post('/requestAccess', (req, res)=>{
+  console.log("Request to launch a bastion to connect to:", req.body);
+  //Launch a container
+  //Retreive the container's public key
+  //Sign / create a certificate
+  //Push certificate back into container
+  //Launch SSHD
+  //Update jumpboxes db
+  // Trim and escape
+  req.sanitize('issue-number').escape();
+  req.sanitize('issue-number').trim();
+  req.sanitize('issue-type').escape();
+  req.sanitize('issue-type').trim();
+  req.sanitize('business-case').escape();
+  req.sanitize('business-case').trim();
+
+  var errors = req.validationErrors();
+  if (errors){
+    console.log("Errors in requestAccess data", errors);
+    console.log("====> redirecting back to /requestAccess");
+    res.render('requestAccess', {user:req.user, errors:errors});
+  }
+  console.log(req.body['business-case']);
+  //Fire up a container
+  containers.startBastion({
+    'displayName':req.user.displayName,
+    'userId':req.user.id
+  }, (err,cInfo)=>{
+    if(err){
+      console.log(err)
+      res.render('error');
+    } //Our container has been started appropriately
+    var dockerInfo = JSON.stringify(cInfo);
+    var bastion = {'containerID':cInfo.id, 'dockerInfo':dockerInfo, 'ttyData':'', 'businessCase':req.body['business-case']};
+    //User.findById({id:req.user.id}, (err,user)=>{
+    //  if(err){
+    //    res.render('error',err);
+    //  }
+    //});
+    //User.findOneAndUpdate({id:req.user.id}, {$push:{bastions: bastion}});
+    //User.findOneAndUpdate({id:req.user.id}, {$push:{bastions: bastion}})
+    User.findByIdAndUpdate(
+        req.user.id,
+        {$push: {"bastions": bastion}},
+        {new : true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
+  });
+  //Add container info to the users' profile
+  res.redirect("/bastions");
 });
 
 app.listen(3000, () => {
@@ -203,7 +253,7 @@ app.listen(3000, () => {
     provider:"selftest",
     email:"noemail",
     complete: true,
-    jumpBoxes:[{containerID:"aaaaaaaa"}, {containerID:"bbbbbbbb"}]
+    bastions:[{containerID:"aaaaaaaa"}, {containerID:"bbbbbbbb"}]
   }, (err,instance)=>{
     if (err){
       console.log("! Error creating user "+ nom);

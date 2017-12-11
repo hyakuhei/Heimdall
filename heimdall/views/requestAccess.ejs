@@ -7,32 +7,39 @@
           <h1>Request Access</h1>
         </div>
       </div>
-
-  <div class="form-group row">
-    <label for="example-text-input" class="col-4 col-form-label">Related Issue Number</label>
-    <div class="col-4">
-      <input class="form-control" type="text" value="31337" id="issue-number">
+      <% if(errors!=null){ %>
+        <div class="alert alert-danger" role="alert">
+          <strong>Oh snap - something was wrong with your submission</strong>
+        <% errors.forEach((err)=>{ %>
+          <span> <%= err %> </span>
+        <% }); %>
+      </div>
+      <% } %>
+  <form action="/requestAccess" method="post">
+    <div class="form-group row">
+      <label for="example-text-input" class="col-4 col-form-label">Related Issue Number</label>
+      <div class="col-4">
+        <input class="form-control" type="text" value="31337" id="issue-number" name="issue-number">
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <select class="form-control" id="issue-type" name="issue-type">
+            <option>Github</option>
+            <option>RTC</option>
+            <option>PagerDuty</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="col-4">
+    <div class="form-group row">
+        <label for="business-case" class="col-4 col-form-label">Business Case</label>
+        <div class="col-8">
+        <textarea class="form-control" id="business-case" name="business-case" rows="3">Short description of why access is required - this may be followed up by compliance team.</textarea>
+      </div>
+    </div>
       <div class="form-group">
-        <select class="form-control" id="issue-type">
-          <option>Github</option>
-          <option>RTC</option>
-          <option>PagerDuty</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="form-group row">
-      <label for="exampleTextarea" class="col-4 col-form-label">Business Case</label>
-      <div class="col-8">
-      <textarea class="form-control" id="exampleTextarea" rows="3">Short description of why access is required - this may be followed up by compliance team.</textarea>
-    </div>
-    </div>
-    <form action="/requestAccess" method="post">
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Request</button>
-      </div>
+          <button type="submit" class="btn btn-primary">Request</button>
+        </div>
     </form>
   </div><!-- /.container -->
   <% include partials/bootstrap_footer.ejs %>

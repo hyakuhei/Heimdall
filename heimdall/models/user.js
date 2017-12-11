@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const JumpBoxSchema = new Schema({
-  id: String,
+const BastionSchema = new Schema({
+//  id: String,
   containerID: String,
+  dockerInfo: String,
   ip: String,
-  port: Number,
-  targetIP: String,
-  startTime: Date,
-  ttyData: String
+//  port: Number,
+//  targetIP: String,
+//  startTime: Date,
+  ttyData: String,
+  businessCase: String
 });
 
 // Create schema and model for user
@@ -24,7 +26,7 @@ const UserSchema = new Schema ({
     required: [true],
     default: false
   },
-  jumpBoxes: [JumpBoxSchema]
+  bastions: [BastionSchema]
 });
 
 const User = mongoose.model('user', UserSchema);
