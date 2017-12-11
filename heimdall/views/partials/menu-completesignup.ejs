@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="/">Heimdall</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto"></ul> <!-- We have this <ul> to push the modal and logout buttons to the right -->
+    <ul class="nav navbar-nav navbar-right">
+       <li>
+         <button type="button" class="fa fa-user" data-toggle="modal" data-target="#myModal"></button>
+       </li>
+       <li>
+         <a href="/auth/logout" class="fa fa-off"><i class="fa-lg fa-sign-out" aria-hidden="true"></i></a>
+       </li>
+    </ul>
+  </div>
+</nav>
+
+<% include modal.ejs %>

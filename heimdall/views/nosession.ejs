@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+  <% include partials/bootstrap_head.ejs %>
+  <body>
+    <% include partials/menu-unauthenticated.ejs %>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-10 text-center" >
+          <h1>Dynamically generated network pivots</h1>
+          <p class="lead"> Using ephemeral containers to guarentee non-persistance of users in the jump-space</p>
+        </div>
+        <div class="col"></div>
+      </div>
+      <div class="row"><br/></div>
+      <div class="row">
+        <div class="col">
+          <h4 align="center"> Dynamic JumpBoxes </h4>
+          <div class="text-center">
+            <img src="/assets/docker.png" class="img-rounded img-responsive" alt="Docker logo" width="250" height="205" />
+          </div>
+          <p>Heimdall uses the magic of <a href='https://www.docker.com'>docker</a> containers as they have some really interesting properties:
+            <ul>
+              <li><strong>Ephemerality</strong>: if operators try to drop ssh keys, access tokens, tools etc on the jump box, they're magically deleted once they loose access.</li>
+              <li><strong>Scalability</strong>: the process for scaling this sort of access is trivial.</li>
+              <li><strong>Security</strong>: Containers use all the fun technologies that we would use to try to stop a shell doing bad things on a bastion hosts (i.e MAC, SECCOMP, Namespaces, CGroups, etc) however using docker buys us extremely useful lifecycle management and introspection capabilities.</li>
+            </ul>
+            </p>
+        </div>
+        <div class="col">
+          <h4 align="center"> 2FA & SSH Certificates </h4>
+          <p>Stuff<br> More stuff</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="alert alert-info">
+            <strong>Login Required!</strong> Heimdall features are only available to logged in users
+          </div>
+      </div>
+
+
+    </div>
+  </div><!-- /.container -->
+    <% include partials/bootstrap_footer.ejs %>

@@ -1,0 +1,23 @@
+{
+  "name": "heimdall",
+  "version": "0.0.1",
+  "description": "Heilmdall generates dynamic ssh bastion hosts using containers",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/hyakuhei/Heildall"
+  },
+  "keywords": [
+    "ssh",
+    "certificate",
+    "bastion"
+  ],
+  "author": "Robert Clark",
+  "license": "ISC"
+}

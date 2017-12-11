@@ -1,0 +1,33 @@
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= user.displayName %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <div class="text-center">
+              <img src="<%= user.profileImageURI %>" class="profile-image img-circle">
+            </div>
+          </div>
+          <div class="col">
+            <p>Userdata:</p>
+            <table>
+              <tr><td>Name:</td><td><%= user.displayName %></td></tr>
+              <tr><td>Auth:</td><td><%= user.provider %></td></tr>
+              <tr><td>Email:</td><td><%= user.email %></td></tr>
+            </table>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

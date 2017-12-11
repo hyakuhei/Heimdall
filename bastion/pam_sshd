@@ -1,0 +1,3 @@
+# @include common-auth
+
+auth		include				google-authenticator

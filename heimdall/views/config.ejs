@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+    <% include partials/bootstrap_head.ejs %>
+    <% include partials/menu.ejs %>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>Config</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="text-center">
+            <img src="<%= user.profileImageURI %>" class="profile-image img-circle">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table>
+            <tr><td>Name:</td><td><%= user.displayName %></td></tr>
+            <tr><td>Auth:</td><td><%= user.provider %></td></tr>
+            <tr><td>Email:</td><td><%= user.email %></td></tr>
+          </table>
+          <div class="row">
+            <div class="col">
+          <% if (user.pubkey) { %>
+            <div class="alert alert-info">
+              <strong>Pubkey:</strong>Replace SSH public key by overwriting if required.
+              <form action="/config" method="post">
+                  <div class="form-group">
+                  <textarea class="form-control" rows="5" id="pubkey" name="pubkey"><%= user.pubkey %></textarea>
+                  <button type="submit" class="btn btn-default">Save</button>
+                </div>
+              </form>
+            </div>
+            <% } else { %>
+            <div class="alert alert-danger">
+              <strong>Upload Pubkey:</strong>Public SSH key is required to access other services via Jump Boxes
+              <form action="/config" method="post">
+                  <div class="form-group">
+                  <textarea class="form-control" rows="5" id="pubkey" name="pubkey"></textarea>
+                  <button type="submit" class="btn btn-default">Save</button>
+                </div>
+              </form>
+            </div>
+          <% } %>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.container -->
+
+    <% include partials/bootstrap_footer.ejs %>
