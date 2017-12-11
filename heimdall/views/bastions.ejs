@@ -50,7 +50,7 @@
               <tr>
                 <th>IP</th>
                 <th>Container</th>
-                <th>Access</th>
+                <th>Log Data</th>
               </tr>
             </thead>
             <tbody>
@@ -60,9 +60,9 @@
                   <td>Archived</td>
                   <td><%= containers[i].Id %></td>
                   <td>
-                    <form action="/launch" method="post">
+                    <form action="/getlog" method="post">
                       <input type="hidden" name="target" value="<%= containers[i].NetworkSettings.Networks.bridge.IPAddress %>"/>
-                      <button type="submit" class="btn btn-default">Launch</button>
+                      <button type="submit" class="btn btn-default">View Log</button>
                     </form>
                   </td>
                 </tr>
